@@ -9,6 +9,8 @@ global totalAccount := 28 ; Define the number of accounts
 
 global tabChangeInterval := 3 ; Define the interval for tab change
 
+global randomizeArray := True ; Randomize Array Fisher-Yates Algorithm
+
 global windowChangeInterval := 8 ; Define the (interval or number of tabs) for window change
 
 global loopState := True ; Initialize Loop State
@@ -66,25 +68,46 @@ F8::  ; Start/Restart Loop
     streamSniperUp(150, 200) ; 150 to 200
 return
 
+; Function to shuffle an array using the Fisher-Yates algorithm
+RandomizeArray(array) {
+    Random, seed
+    Random, random
+    Random, random, 1, array.MaxIndex()
+    Random, random, 1, array.MaxIndex()
+    Random, random
+    Loop, % array.MaxIndex() {
+        Random, index, A_Index, array.MaxIndex()
+        ; Swap array[A_Index] and array[index]
+        temp := array[A_Index]
+        array[A_Index] := array[index]
+        array[index] := temp
+    }
+}
+
 streamSniperUp(start, end) {
     ToolTip, Start ; Display tooltip indicating loop start
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
     
     LoopStartTime := A_TickCount ; Record loop start time
+    
+    ; Create an array of numbers from start to end
+    randomNumbers := []
 
     Loop, % (end - start + 1) {
         if (!loopState) 
             break  ; Exit the loop
     
-        Send % (start + A_Index - 1)
-        Sleep, 10
-        Send, {Enter}
-        Sleep, 10
+        randomNumbers.Push(start + A_Index - 1)
+
+        ; Send % (start + A_Index - 1)
+        ; Sleep, 10
+        ; Send, {Enter}
+        ; Sleep, 10
         
-        if (Mod(A_Index, tabChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of tabChangeInterval
-            Send, ^{tab}  ; Send Ctrl+Tab
-            Sleep, 100
-        }
+        ; if (Mod(A_Index, tabChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of tabChangeInterval
+        ;     Send, ^{tab}  ; Send Ctrl+Tab
+        ;     Sleep, 100
+        ; }
 
         ; if (Mod(A_Index, tabChangeInterval * windowChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of (tabChangeInterval * windowChangeInterval)
         ;     Send !{Tab} ; Send Alt+Tab
@@ -94,6 +117,27 @@ streamSniperUp(start, end) {
         
         ; if (Mod(A_Index, 3) = 0 && A_Index < repetitions) ; If the current index is a multiple of tabChangeInterval
         ;     Sleep, 15000
+    }
+
+    ; Check if randomizeArray is set to True and shuffle the array if needed
+    if (randomizeArray) {
+        RandomizeArray(randomNumbers) ; Shuffle the array using Fisher-Yates algorithm
+    }
+
+    ; Iterate through the shuffled array and send each unique number
+    for index, number in randomNumbers {
+        if (!loopState) 
+            break  ; Exit the loop
+    
+        Send, % number
+        Sleep, 10
+        Send, {Enter}
+        Sleep, 10
+
+        if (Mod(A_Index, tabChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of tabChangeInterval
+            Send, ^{tab}  ; Send Ctrl+Tab
+            Sleep, 100
+        }
     }
     
     LoopEndTime := A_TickCount ; Record loop end time
