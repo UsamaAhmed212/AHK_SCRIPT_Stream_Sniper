@@ -13,7 +13,10 @@ SpikE | OP  5400684791
 Hasib | 51775690258
 GUNDA . 0P  5244828288
 S8ULNOOBEDIAN  51801336333
-个EMO  51238048239
+ALLERiA . OP  52027306851
+Water Melon  51719759313
+BAPPY  51238048239
+TG | G0J0  5198188352
 )
 
 
@@ -70,37 +73,47 @@ F3:: ; Start
     FileDelete, %tempFile%
 return
 
+neutralizeElemen() { ; Start/Restart Loop
+    ToolTip, Start ; Display tooltip indicating loop start
+    SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
+    
+    Loop, % totalAccount {  ; Start/Restart Loop
+        if (!loopState)
+            break  ; Exit the loop
+
+        Send ^+d  ; Send Ctrl + Shift + D
+        Sleep, 100
+        Send, ^{tab}  ; Send Ctrl+Tab
+        Sleep, 400
+    }
+
+    ToolTip, Completed ; Display tooltip indicating loop completion
+    SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
+}
+return
 
 
 Esc::
+   loopState := True
+   neutralizeElemen()
+return
+
+
+F1::
    loopState := False
 return
 
-F1::
+Space:: ; Space bar Key press
     pause, toggle
     ToolTip, % (A_IsPaused ? "Script Paused" : "Script Resumed") ; Display tooltip indicating script state
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
 return
 
 
-; F2::  ; Start/Restart Loop
-;     loopState := True
-;     streamSniper(100, 150) ; 100 to 150
-;     streamSniper(30, 99) ; 30 to 99
-;     streamSniperDown(29, 0) ; 29 to 0
-;     streamSniper(151, 200) ; 151 to 200
-; return
-
-; F3::  ; Start/Restart Loop
-;     loopState := True
-;     streamSniper(100, 200) ; 100 to 200
-;     streamSniperDown(29, 0) ; 29 to 0
-;     streamSniper(30, 100) ; 30 to 100
-; return
-
 F2::  ; Start/Restart Loop
     loopState := True
-    streamSniperUp(0, 200) ; 0 to 200
+    streamSniperUp(0, 250) ; 0 to 250
+    ; streamSniperDown(250, 0) ; 250 to 0
 return
 
 
@@ -169,15 +182,6 @@ streamSniper(start, end) {
         ;     Send, ^{tab}  ; Send Ctrl+Tab
         ;     Sleep, 100
         ; }
-
-        ; if (Mod(A_Index, tabChangeInterval * windowChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of (tabChangeInterval * windowChangeInterval)
-        ;     Send !{Tab} ; Send Alt+Tab
-        ;     Sleep, 500
-        ; }
-        
-        
-        ; if (Mod(A_Index, 3) = 0 && A_Index < repetitions) ; If the current index is a multiple of tabChangeInterval
-        ;     Sleep, 15000
     }
 
     ; Check if randomizeArray is set to True and shuffle the array if needed
@@ -200,7 +204,10 @@ streamSniper(start, end) {
             Sleep, 100
         }
     }
-    
+
+    Sleep, 100
+    Send, ^{tab}  ; Send Ctrl+Tab
+
     LoopEndTime := A_TickCount ; Record loop end time
     LoopDuration := (LoopEndTime - LoopStartTime) / 1000 ; Calculate loop duration in Seconds
 
@@ -229,15 +236,6 @@ streamSniperUp(start, end) {
             Send, ^{tab}  ; Send Ctrl+Tab
             Sleep, 100
         }
-
-        ; if (Mod(A_Index, tabChangeInterval * windowChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of (tabChangeInterval * windowChangeInterval)
-        ;     Send !{Tab} ; Send Alt+Tab
-        ;     Sleep, 500
-        ; }
-        
-        
-        ; if (Mod(A_Index, 3) = 0 && A_Index < repetitions) ; If the current index is a multiple of tabChangeInterval
-        ;     Sleep, 15000
     }
     
     LoopEndTime := A_TickCount ; Record loop end time
@@ -263,11 +261,6 @@ streamSniperDown(start, end) {
             Send, ^{tab}  ; Send Ctrl+Tab
             Sleep, 200
         }
-
-        ; if (Mod(A_Index, tabChangeInterval * windowChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of (tabChangeInterval * windowChangeInterval)
-        ;     Send !{Tab} ; Send Alt+Tab
-        ;     Sleep, 200
-        ; }
     }
 }
 
@@ -304,11 +297,6 @@ commentFunction(comment) { ; Start/Restart Loop
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
 }
 
-
-F12::
-    Send, {Raw}%winComment%
-return
-
 F11::
     loopState := True
     findComment()
@@ -336,7 +324,11 @@ findComment() { ; Start/Restart Loop
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
 }
 
+
+F12::
+    Send, {Raw}%winComment%
+return
+
 RemoveToolTip:
     ToolTip  ; Clear the tooltip
 return
-
