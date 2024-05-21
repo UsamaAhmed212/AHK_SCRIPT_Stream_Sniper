@@ -132,16 +132,6 @@ streamSniper(start, end) {
             break  ; Exit the loop
     
         randomNumbers.Push(start + A_Index - 1)
-
-        ; Send % (start + A_Index - 1)
-        ; Sleep, 10
-        ; Send, {Enter}
-        ; Sleep, 10
-        
-        ; if (Mod(A_Index, tabChangeInterval) = 0 && A_Index < repetitions) { ; If the current index is a multiple of tabChangeInterval
-        ;     Send, ^{tab}  ; Send Ctrl+Tab
-        ;     Sleep, 100
-        ; }
     }
 
     ; Check if randomizeArray is set to True and shuffle the array if needed
@@ -208,6 +198,11 @@ streamSniperUp(start, end) {
 }
 
 streamSniperDown(start, end) {
+    ToolTip, Start ; Display tooltip indicating loop start
+    SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
+    
+    LoopStartTime := A_TickCount ; Record loop start time
+
     Loop, % (start - end + 1) {
         if (!loopState) 
             break  ; Exit the loop
@@ -222,6 +217,14 @@ streamSniperDown(start, end) {
             Sleep, 200
         }
     }
+        
+    LoopEndTime := A_TickCount ; Record loop end time
+    LoopDuration := (LoopEndTime - LoopStartTime) / 1000 ; Calculate loop duration in Seconds
+
+    ToolTip, Completed - Loop took %LoopDuration% Seconds
+    
+    ; ToolTip, Completed ; Display tooltip indicating loop completion
+    SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
 }
 
 F9::
