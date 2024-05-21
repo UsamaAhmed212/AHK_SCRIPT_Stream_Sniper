@@ -1,22 +1,21 @@
 global repetitionsComment := "#PubgDaddy"
 
 ; global winComment := "SpikE | OP 5400684791"
-; global winComment := "Hasib | 51775690258" ;umama
-global winComment := "GUNDA . 0P  5244828288"
-; global winComment := "S8ULNOOBEDIAN  51801336333"
-
 
 ; Multiline string containing multiple lines of text
 winAccountString =
 (
 SpikE | OP  5400684791
-Hasib | 51775690258
+Hasib  51775690258
 GUNDA . 0P  5244828288
 S8ULNOOBEDIAN  51801336333
 ALLERiA . OP  52027306851
 Water Melon  51719759313
 BAPPY  51238048239
-TG | G0J0  5198188352
+Alpha  5191205958
+TG | 7 STAR  5198188352
+KING Tamim  5350212840
+RTesMim  52014574581
 )
 
 
@@ -33,45 +32,6 @@ global windowChangeInterval := 8 ; Define the (interval or number of tabs) for w
 global loopState := True ; Initialize Loop State
 
 
-
-F3:: ; Start
-    ; Define your array of winAccounts
-    winAccounts := []
-
-    ; Split the string by (new line)
-    winAccountStringArray := StrSplit(winAccountString, "`n")
-
-    ; Loop through each value in winAccountStringArray and push it into winAccounts
-    for index, value in winAccountStringArray
-        winAccounts.Push(value)
-
-    ; Concatenate all winAccounts into a single string
-    winAccountsString := ""
-    Loop % winAccounts.MaxIndex()
-        winAccountsString .= winAccounts[A_Index] "`r`n"  ; Append each comment with a new line
-
-    ; Define the filename for the temporary text file
-    tempFile := "temp_chat_stream_sniper.txt"
-
-    ; Save the concatenated comments to the temporary text file
-    FileDelete, %tempFile%  ; Delete any existing temp file
-    FileAppend, %winAccountsString%, %tempFile%  ; Append all comments to the temp file
-
-    ; Open the temporary file using the default program (usually Notepad)
-    Run, %tempFile%
-
-    ; Read the contents of the temporary file
-    FileRead, fileContents, %tempFile%
-
-    ; Display the concatenated comments from the file in a message box
-    MsgBox, % fileContents
-
-    ; Copy the concatenated comments to the clipboard
-    Clipboard := fileContents
-
-    ; Delete the temporary file
-    FileDelete, %tempFile%
-return
 
 neutralizeElemen() { ; Start/Restart Loop
     ToolTip, Start ; Display tooltip indicating loop start
@@ -103,14 +63,14 @@ F1::
    loopState := False
 return
 
-Space:: ; Space bar Key press
+F2:: ; Space bar Key press
     pause, toggle
     ToolTip, % (A_IsPaused ? "Script Paused" : "Script Resumed") ; Display tooltip indicating script state
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
 return
 
 
-F2::  ; Start/Restart Loop
+F3::  ; Start/Restart Loop
     loopState := True
     streamSniperUp(0, 250) ; 0 to 250
     ; streamSniperDown(250, 0) ; 250 to 0
@@ -271,11 +231,57 @@ return
 
 F10::
     loopState := True
-    commentFunction(winComment)
+    commentFunction("^v", False)
 return
 
 
-commentFunction(comment) { ; Start/Restart Loop
+F11::
+    loopState := True
+    findComment()
+return
+
+
+F12:: ; Start
+    ; Define your array of winAccounts
+    winAccounts := []
+
+    ; Split the string by (new line)
+    winAccountStringArray := StrSplit(winAccountString, "`n")
+
+    ; Loop through each value in winAccountStringArray and push it into winAccounts
+    for index, value in winAccountStringArray
+        winAccounts.Push(value)
+
+    ; Concatenate all winAccounts into a single string
+    winAccountsString := ""
+    Loop % winAccounts.MaxIndex()
+        winAccountsString .= winAccounts[A_Index] "`r`n"  ; Append each comment with a new line
+
+    ; Define the filename for the temporary text file
+    tempFile := "temp_chat_stream_sniper.txt"
+
+    ; Save the concatenated comments to the temporary text file
+    FileDelete, %tempFile%  ; Delete any existing temp file
+    FileAppend, %winAccountsString%, %tempFile%  ; Append all comments to the temp file
+
+    ; Open the temporary file using the default program (usually Notepad)
+    Run, %tempFile%
+
+    ; Read the contents of the temporary file
+    FileRead, fileContents, %tempFile%
+
+    ; Display the concatenated comments from the file in a message box
+    MsgBox, % fileContents
+
+    ; Copy the concatenated comments to the clipboard
+    Clipboard := fileContents
+
+    ; Delete the temporary file
+    FileDelete, %tempFile%
+return
+
+
+commentFunction(comment, rawValue := true) { ; Start/Restart Loop
     ToolTip, Start ; Display tooltip indicating loop start
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
     
@@ -283,7 +289,11 @@ commentFunction(comment) { ; Start/Restart Loop
         if (!loopState)
             break  ; Exit the loop
 
-        Send, {Raw}%comment%
+        if (rawValue) {
+            Send, {Raw}%comment%  ; Send the raw text if rawValue is true
+        } else {
+            Send, %comment%  ; Send the interpreted text if rawValue is false
+        }
         Sleep, 250
         send, {enter}
         Sleep, 250
@@ -296,11 +306,6 @@ commentFunction(comment) { ; Start/Restart Loop
     ToolTip, Completed ; Display tooltip indicating loop completion
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
 }
-
-F11::
-    loopState := True
-    findComment()
-return
 
 findComment() { ; Start/Restart Loop
     ToolTip, Start ; Display tooltip indicating loop start
@@ -323,11 +328,6 @@ findComment() { ; Start/Restart Loop
     ToolTip, Completed ; Display tooltip indicating loop completion
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
 }
-
-
-F12::
-    Send, {Raw}%winComment%
-return
 
 RemoveToolTip:
     ToolTip  ; Clear the tooltip
