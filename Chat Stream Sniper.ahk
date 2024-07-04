@@ -1,4 +1,4 @@
-global repetitionsComment := "#PubgDaddy"
+global repetitionsComment := "#pubgdaddy "
 
 ; global winComment := "SpikE | OP 5400684791"
 
@@ -6,16 +6,20 @@ global repetitionsComment := "#PubgDaddy"
 winAccountString =
 (
 SpikE | OP  5400684791
-Hasib  51775690258
-GUNDA . 0P  5244828288
-S8ULNOOBEDIAN  51801336333
-ALLERiA . OP  52027306851
-Water Melon  51719759313
 BAPPY  51238048239
+S8ULNOOBEDIAN  51801336333
+GUNDA . 0P  5244828288
+BERTO . OP  52027306851
+Queen Mim  52014574581
+HAF SAnur  5624665911
+Hasib  51775690258
+TSP AYaTO  5738871282
+FBI Ridoy  51379092486
+YX | RayhanYT  5575238449
+TG | NIKLAUS  5198188352
 Alpha  5191205958
-TG | 7 STAR  5198188352
-KING Tamim  5350212840
-RTesMim  52014574581
+SHABBIR 51719759313
+KING Shadin 5350212840
 )
 
 
@@ -23,9 +27,9 @@ global repetitions := 250 ; Define the number of repetitions
 
 global totalAccount := 25 ; Define the number of accounts
 
-global tabChangeInterval := 3 ; Define the interval for tab change
+global tabChangeInterval := 1 ; Define the interval for tab change
 
-global randomizeArray := True ; Randomize Array Fisher-Yates Algorithm
+global randomizeArray := False ; Randomize Array Fisher-Yates Algorithm
 
 global windowChangeInterval := 8 ; Define the (interval or number of tabs) for window change
 
@@ -33,7 +37,7 @@ global loopState := True ; Initialize Loop State
 
 
 
-neutralizeElemen() { ; Start/Restart Loop
+neutralizeElement() { ; Start/Restart Loop
     ToolTip, Start ; Display tooltip indicating loop start
     SetTimer, RemoveToolTip, 2000  ; Remove the tooltip after 2 Seconds
     
@@ -55,7 +59,7 @@ return
 
 Esc::
    loopState := True
-   neutralizeElemen()
+   neutralizeElement()
 return
 
 
