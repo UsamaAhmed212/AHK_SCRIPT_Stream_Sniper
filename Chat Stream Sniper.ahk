@@ -45,7 +45,7 @@ neutralizeElement() { ; Start/Restart Loop
         if (!loopState)
             break  ; Exit the loop
 
-        Send ^+d  ; Send Ctrl + Shift + D
+        Send ^+y  ; Send Ctrl + Shift + Y
         Sleep, 100
         Send, ^{tab}  ; Send Ctrl+Tab
         Sleep, 400
