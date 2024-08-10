@@ -66,7 +66,7 @@ F3::  ; Start/Restart Loop
 
     LoopStartTime := A_TickCount ; Record loop start time
 
-    Loop, 12 {
+    Loop, 20 {
         if (!loopState)
             break  ; Exit the loop
 
@@ -85,6 +85,14 @@ F3::  ; Start/Restart Loop
         (A_Index = 10) ? launchChat(11) : ""
         (A_Index = 11) ? launchChat(12) : ""
         (A_Index = 12) ? launchChat(13) : ""
+        (A_Index = 13) ? launchChat(14) : ""
+        (A_Index = 14) ? launchChat(15) : ""
+        (A_Index = 15) ? launchChat(16) : ""
+        (A_Index = 16) ? launchChat(17) : ""
+        (A_Index = 17) ? launchChat(18) : ""
+        (A_Index = 18) ? launchChat(19) : ""
+        (A_Index = 19) ? launchChat(20) : ""
+        (A_Index = 20) ? launchChat(21) : ""
 
         Sleep, 1000
         Send, ^q ; Send Ctrl+V
@@ -144,7 +152,7 @@ F9::  ; Start/Restart Loop
 
         ToolTip % A_Index
         Send, ^{tab}  ; Send Ctrl+Tab
-        Sleep, 2000
+        Sleep, 9000
     }
     
     LoopEndTime := A_TickCount ; Record loop end time
